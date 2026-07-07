@@ -1,0 +1,4 @@
+test_id,input_code,question_id,question_type,question,expected_doc_ids,expected_doc_title,expected_source_type,gold_answer,answer_facts,actual_retrieved_doc_ids,actual_output,expected_embedding_code,actual_embedding_code,similarity_score,faithfulness_check,hallucination_check,match_status,remarks
+RAG_TC_001,EVL-RAG-001,,,,,,,,,,,,,,Not Checked,Not Checked,Not Run,
+RAG_TC_002,EVL-RAG-002,,,,,,,,,,,,,,Not Checked,Not Checked,Not Run,
+RAG_TC_003,EVL-RAG-003,,,,,,,,,,,,,,Not Checked,Not Checked,Not Run,
