@@ -29,9 +29,9 @@ For the first version of this QA workflow, 10 `basic` questions were selected. E
 ## Files
 
 - `README.md` - explains the project objective, dataset, QA workflow, and current status.
-- `RAG_Pipeline_Evaluation_ETL_and_Embedding_Check.ipynb` - Google Colab notebook used for ETL, expected embedding code generation, and demo comparison.
+- `RAG_Pipeline_Evaluation_ETL_and_Embedding_Check.ipynb` - Google Colab notebook used for ETL, expected embedding code generation, demo comparison, and fact-level checking.
 - `lightweight_rag_qa_dataset_with_expected_codes.csv` - lightweight QA dataset created from EnterpriseRAG-Bench with expected answers and expected embedding codes.
-- `rag_qa_demo_comparison_result.csv` - demo result file showing one actual-output comparison with similarity score and pass/fail status.
+- `rag_qa_demo_comparison_result_with_fact_check.csv` - final demo result file showing similarity score, pass/fail status, matched facts, missing facts, fact match score, and fact check status.
 - `documents/` - sample local documents kept for reference.
 
 ## Testing Flow
@@ -44,7 +44,8 @@ For the first version of this QA workflow, 10 `basic` questions were selected. E
 6. When a RAG chatbot/model is available, run each question against the system and store the response in `actual_output`.
 7. Generate actual embedding fingerprint codes from the model responses.
 8. Compare expected answer and actual output using semantic similarity score.
-9. Mark each test case as `Pass`, `Fail`, or `Not Run` with remarks.
+9. Check whether expected answer facts are present in the actual output using fact-level meaning check.
+10. Mark each test case as `Pass`, `Fail`, or `Not Run` with remarks.
 
 ## Steps of Procedure
 
@@ -93,11 +94,11 @@ Current status:
 - Lightweight QA dataset is prepared.
 - Expected embedding fingerprint codes are generated.
 - One demo actual output comparison is completed.
-- Similarity score and Pass/Fail logic are verified.
+- Similarity score, fact-level meaning check, and Pass/Fail logic are verified.
 
 Next phase:
 
 - Run the selected questions against the actual RAG chatbot/model.
 - Fill the `actual_output` column with model responses.
-- Run the comparison logic for all test cases.
-- Prepare the final QA report with Pass, Fail, similarity score, and remarks.
+- Run the comparison and fact-check logic for all test cases.
+- Prepare the final QA report with Pass, Fail, similarity score, fact match score, missing facts, and remarks.
