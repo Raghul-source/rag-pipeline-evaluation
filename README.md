@@ -13,7 +13,7 @@ The goal is to check whether the chatbot:
 
 This project focuses on QA evaluation of a RAG system. The goal is not to build the RAG chatbot, but to prepare a QA workflow that can verify whether a RAG chatbot retrieves the correct document and generates an answer that matches the expected answer.
 
-The project currently prepares a lightweight QA dataset, generates expected embedding fingerprint codes, and demonstrates one sample actual-output comparison using semantic similarity.
+The project currently prepares a lightweight QA dataset, generates expected embedding fingerprint codes, and demonstrates one sample end-to-end QA check using retrieval match, semantic similarity, fact-level meaning check, and overall QA status.
 
 ## Dataset Used
 
@@ -31,7 +31,7 @@ For the first version of this QA workflow, 10 `basic` questions were selected. E
 - `README.md` - explains the project objective, dataset, QA workflow, and current status.
 - `RAG_Pipeline_Evaluation_ETL_and_Embedding_Check.ipynb` - Google Colab notebook used for ETL, expected embedding code generation, demo comparison, and fact-level checking.
 - `lightweight_rag_qa_dataset_with_expected_codes.csv` - lightweight QA dataset created from EnterpriseRAG-Bench with expected answers and expected embedding codes.
-- `rag_qa_demo_comparison_result_with_fact_check.csv` - final demo result file showing similarity score, pass/fail status, matched facts, missing facts, fact match score, and fact check status.
+- `rag_qa_final_demo_result_with_all_checks.csv` - final demo result file showing retrieval match status, similarity score, fact-level check, overall QA status, and remarks.
 - `documents/` - sample local documents kept for reference.
 
 ## Testing Flow
@@ -43,17 +43,19 @@ For the first version of this QA workflow, 10 `basic` questions were selected. E
 5. Generate expected embedding fingerprint codes from the gold answers.
 6. When a RAG chatbot/model is available, run each question against the system and store the response in `actual_output`.
 7. Generate actual embedding fingerprint codes from the model responses.
-8. Compare expected answer and actual output using semantic similarity score.
-9. Check whether expected answer facts are present in the actual output using fact-level meaning check.
-10. Mark each test case as `Pass`, `Fail`, or `Not Run` with remarks.
+8. Check whether the actual retrieved document matches the expected document ID.
+9. Compare expected answer and actual output using semantic similarity score.
+10. Check whether expected answer facts are present in the actual output using fact-level meaning check.
+11. Combine retrieval, similarity, and fact-check results into an overall QA status.
+12. Mark each test case as `Pass`, `Fail`, or `Not Run` with remarks.
 
 ## Steps of Procedure
 
 1. Prepare a lightweight QA dataset from EnterpriseRAG-Bench.
 2. Generate expected embedding fingerprint codes from the gold answers.
-3. Add actual RAG model outputs when the system is available.
-4. Compare expected and actual outputs using semantic similarity.
-5. Mark each test case as Pass, Fail, or Not Run with remarks.
+3. Add actual retrieved document IDs and actual RAG model outputs when the system is available.
+4. Check retrieval match, semantic similarity, and fact-level meaning match.
+5. Generate overall QA status as Pass, Fail, or Not Run with remarks.
 
 ## Question Selection Plan
 
@@ -85,7 +87,11 @@ The RAG system receives/searches the selected source documents.
 
 The actual retrieved document is compared with the expected document ID.
 
-The actual answer is compared with the gold answer and answer facts.
+The actual answer is compared with the gold answer using semantic similarity.
+
+The expected answer facts are checked against the actual output using fact-level meaning check.
+
+The retrieval result, similarity result, and fact-check result are combined into an overall QA status.
 
 ## Current Status and Next Phase
 
@@ -93,12 +99,12 @@ Current status:
 
 - Lightweight QA dataset is prepared.
 - Expected embedding fingerprint codes are generated.
-- One demo actual output comparison is completed.
-- Similarity score, fact-level meaning check, and Pass/Fail logic are verified.
+- One demo end-to-end QA check is completed.
+- Retrieval match, semantic similarity, fact-level meaning check, and overall QA status logic are verified.
 
 Next phase:
 
 - Run the selected questions against the actual RAG chatbot/model.
-- Fill the `actual_output` column with model responses.
-- Run the comparison and fact-check logic for all test cases.
-- Prepare the final QA report with Pass, Fail, similarity score, fact match score, missing facts, and remarks.
+- Fill the `actual_retrieved_doc_ids` and `actual_output` columns with RAG system results.
+- Run retrieval, similarity, fact-check, and overall QA logic for all test cases.
+- Prepare the final QA report with retrieval status, similarity score, fact match score, overall status, missing facts, and remarks.
