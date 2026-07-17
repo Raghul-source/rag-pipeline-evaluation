@@ -11,9 +11,9 @@ The goal is to check whether the chatbot:
 
 ## Project Objective
 
-This project focuses on QA evaluation of a RAG system. The goal is not to build the RAG chatbot, but to prepare a QA workflow that can verify whether a RAG chatbot retrieves the correct document and generates an answer that matches the expected answer.
+This project focuses on QA evaluation of a RAG system. The goal is to prepare a QA workflow that can verify whether a RAG chatbot retrieves the correct document and generates an answer that matches the expected answer.
 
-The project currently prepares a lightweight QA dataset, generates expected embedding fingerprint codes, and demonstrates one sample end-to-end QA check using retrieval match, semantic similarity, fact-level meaning check, and overall QA status.
+The project prepares a lightweight QA dataset, generates expected embedding fingerprint codes, creates a document store, runs a demo RAG pipeline to generate actual outputs, and evaluates the results using retrieval match, semantic similarity, fact-level meaning check, and overall QA status.
 
 ## Dataset Used
 
@@ -29,33 +29,37 @@ For the first version of this QA workflow, 10 `basic` questions were selected. E
 ## Files
 
 - `README.md` - explains the project objective, dataset, QA workflow, and current status.
-- `RAG_Pipeline_Evaluation_ETL_and_Embedding_Check.ipynb` - Google Colab notebook used for ETL, expected embedding code generation, demo comparison, and fact-level checking.
+- `RAG_Pipeline_Evaluation_ETL_and_Embedding_Check.ipynb` - Google Colab notebook used for ETL, expected embedding code generation, document store creation, demo RAG pipeline, hybrid retrieval, chunk-based answer extraction, semantic similarity comparison, fact-level checking, and overall QA status.
 - `lightweight_rag_qa_dataset_with_expected_codes.csv` - lightweight QA dataset created from EnterpriseRAG-Bench with expected answers and expected embedding codes.
 - `rag_qa_final_demo_result_with_all_checks.csv` - final demo result file showing retrieval match status, similarity score, fact-level check, overall QA status, and remarks.
-- `documents/` - sample local documents kept for reference.
+- `document_store/` - created during notebook execution to store exported source documents used by the demo RAG pipeline.
 
 ## Testing Flow
 
 1. Load EnterpriseRAG-Bench from Hugging Face.
-2. Select 10 basic questions from the `questions` dataset.
+2. Select basic questions from the `questions` dataset.
 3. Use `expected_doc_ids` to find the matching source documents from the `documents` dataset.
-4. Create a lightweight QA dataset with question, expected document, gold answer, and answer facts.
+4. Create a lightweight QA dataset with question, expected document ID, gold answer, and answer facts.
 5. Generate expected embedding fingerprint codes from the gold answers.
-6. When a RAG chatbot/model is available, run each question against the system and store the response in `actual_output`.
-7. Generate actual embedding fingerprint codes from the model responses.
-8. Check whether the actual retrieved document matches the expected document ID.
-9. Compare expected answer and actual output using semantic similarity score.
-10. Check whether expected answer facts are present in the actual output using fact-level meaning check.
-11. Combine retrieval, similarity, and fact-check results into an overall QA status.
-12. Mark each test case as `Pass`, `Fail`, or `Not Run` with remarks.
+6. Export source documents into a `document_store` folder during notebook execution.
+7. Run the demo RAG pipeline using hybrid retrieval.
+8. Generate `actual_retrieved_doc_ids` and `actual_output`.
+9. Generate actual embedding fingerprint codes from the demo RAG outputs.
+10. Check whether the actual retrieved document matches the expected document ID.
+11. Compare expected answer and actual output using semantic similarity score.
+12. Check whether expected answer facts are present in the actual output using fact-level meaning check.
+13. Combine retrieval, similarity, and fact-check results into an overall QA status.
+14. Mark each test case as `Pass`, `Fail`, or `Not Run` with detailed remarks.
 
 ## Steps of Procedure
 
 1. Prepare a lightweight QA dataset from EnterpriseRAG-Bench.
 2. Generate expected embedding fingerprint codes from the gold answers.
-3. Add actual retrieved document IDs and actual RAG model outputs when the system is available.
-4. Check retrieval match, semantic similarity, and fact-level meaning match.
-5. Generate overall QA status as Pass, Fail, or Not Run with remarks.
+3. Create a `document_store` folder from the expected source documents.
+4. Run demo RAG retrieval using hybrid search.
+5. Generate actual retrieved document IDs and actual outputs using chunk-based answer extraction.
+6. Check retrieval match, semantic similarity, and fact-level meaning match.
+7. Generate overall QA status as Pass, Fail, or Not Run with detailed remarks.
 
 ## Question Selection Plan
 
@@ -79,19 +83,23 @@ For each selected question:
 
 ## QA Flow
 
-Question dataset gives the correct document ID.
+The question dataset provides the expected document ID and expected answer.
 
-The matching document is taken from the documents dataset.
+The matching source document is exported into `document_store` during notebook execution.
 
-The RAG system receives/searches the selected source documents.
+The demo RAG pipeline reads documents from `document_store`.
 
-The actual retrieved document is compared with the expected document ID.
+Hybrid retrieval selects the most relevant document using keyword matching and embedding similarity.
+
+The actual retrieved document ID is compared with the expected document ID.
+
+The actual answer is generated from the retrieved document using chunk-based answer extraction.
 
 The actual answer is compared with the gold answer using semantic similarity.
 
 The expected answer facts are checked against the actual output using fact-level meaning check.
 
-The retrieval result, similarity result, and fact-check result are combined into an overall QA status.
+The retrieval result, similarity result, and fact-check result are combined into an overall QA status with detailed remarks.
 
 ## Current Status and Next Phase
 
@@ -99,12 +107,21 @@ Current status:
 
 - Lightweight QA dataset is prepared.
 - Expected embedding fingerprint codes are generated.
-- One demo end-to-end QA check is completed.
+- `document_store` creation is added during notebook execution.
+- Demo RAG pipeline is added using hybrid retrieval and chunk-based answer extraction.
 - Retrieval match, semantic similarity, fact-level meaning check, and overall QA status logic are verified.
+- Detailed failure remarks are added for failed cases.
+
+Latest result summary:
+
+- Retrieval match: 9 Pass, 1 Fail.
+- Semantic similarity: 1 Pass, 9 Fail.
+- Fact-level check: 7 Pass, 3 Fail.
+- Overall QA status: 1 Pass, 9 Fail.
 
 Next phase:
 
-- Run the selected questions against the actual RAG chatbot/model.
-- Fill the `actual_retrieved_doc_ids` and `actual_output` columns with RAG system results.
-- Run retrieval, similarity, fact-check, and overall QA logic for all test cases.
+- Improve demo RAG answer quality so `actual_output` becomes more direct and less noisy.
+- Reduce extra/unwanted text in generated answers.
+- Re-run retrieval, similarity, fact-check, and overall QA logic after improvements.
 - Prepare the final QA report with retrieval status, similarity score, fact match score, overall status, missing facts, and remarks.
