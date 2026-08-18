@@ -1,11 +1,191 @@
 test_id,question,expected_doc_ids,gold_answer,actual_output,contextual_precision_status,contextual_precision_score,contextual_precision_reason,contextual_recall_score,contextual_recall_status,contextual_recall_reason,answer_relevancy_score,answer_relevancy_status,answer_relevancy_reason,direct_measure_metric,direct_measure_score,direct_measure_reason
-RAG_TC_001,What are the default size limits for file uploads and total request size for the new multipart upload support on the OpenAI-compatible API endpoints?,dsid_ae068ee4aa9640159427cd941bef0238,The default limits are 10 MiB per file (max_file_size) and 50 MiB total per request (max_total_request_size) for multipart uploads on the OpenAI-compatible endpoints.,"Answer: 10MiB, 50MiB, 20.",,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,answer_relevancy,0.3333333333333333,"The score is 0.33 because the actual output failed to address the main question about default size limits for file uploads and total request size, instead repeating the same irrelevant information twice."
-RAG_TC_002,What is the name of the new metric added so SRE can track when server-side streaming sessions get finalized due to hitting the time limit?,dsid_9550250a59e74f1bbd5612480b2e7100,The new metric is `stream.timebox_finalized` (with labels for route and model).,Answer: timeboxed,Pass,1.0,"The score is 1.00 because the first two nodes in the retrieval contexts are relevant, and the third node is correctly ranked lower due to the reason 'The second document does not provide any relevant information about the default size limits for file uploads and total request size for the new multipart upload support on the OpenAI-compatible API endpoints.'",0.9411764705882353,Pass,"The score is 0.94 because the original expected output is mostly attributed to the 1st node in retrieval context, which provides detailed information about the default limits and their implementation, while the 2nd node in retrieval context is related to a different topic, server-side streaming timebox, and does not support the sentence about default limits. Node 1 has a comprehensive explanation of the default limits, including their values and how they can be overridden, which matches the sentence in the original expected output.",0.3333333333333333,Fail,"The score is 0.33 because the actual output failed to address the question about default size limits for file uploads and total request size for the new multipart upload support, instead providing irrelevant information about the answer not being a size limit.",,,
-RAG_TC_003,What are the acceptance criteria for the project introducing an algorithm to generate interactive UI color states and a Kappa-style elevation scale for dense table and grid components?,dsid_3fd6af404fae48e6b8ea5a57875ef78f,"The acceptance criteria are: (1) deliver a stable design JSON token spec including the base palette, interactive derivative tokens (e.g., color.interactive.primary.hover), and elevation.kappa.0-6 with explicit shadow parameters; (2) land an implementation-ready tokens PR in the frontend repo, with DataGrid and Table consuming the new tokens behind a feature flag; (3) pass accessibility contrast checks for all interactive states (3:1 where applicable and 4.5:1 for primary actionable text); (4) add per-component visual regression snapshots/tolerances with no regressions beyond approved deltas; (5) update the Figma design kit with tokenized components and guidance notes; and (6) execute a rollout plan from internal canary on analytics dashboards to staged rollout and full migration with a fallback.","Answer: This PR implements a server-side streaming timebox that gracefully converts oversized/inflight streams into a final 'timeboxed' terminal event, augments client-cancel handling to be idempotent across reconnect/resume windows, and plumbs a compact resume token that includes tool-call idempotency metadata.",Pass,1.0,"The score is 1.00 because the first node in the retrieval context is highly relevant, and the second node is correctly ranked lower due to being irrelevant to the topic of adding a new metric for server-side streaming sessions.",0.9375,Pass,"The score is 0.94 because the original expected output closely matches the supportive reasons from the 1st node in retrieval context, which includes detailed descriptions of the new metric, its implementation, and its benefits, while the unsupportive reasons do not apply as the expected output is well-represented by the supportive reasons.",0.3333333333333333,Fail,"The score is 0.33 because the actual output failed to address the question about default size limits for file uploads and total request size for the new multipart upload support, instead providing irrelevant information about the answer not being a size limit.",,,
-RAG_TC_004,"In the meeting about onboarding a SaaS product to Google Cloud Marketplace, what did the GCP team recommend for handling delays where a new subscription entitlement is not immediately available during the customer onboarding flow?",dsid_6c4c1c875e704f09b4d791d64d7bc7e5,"The GCP team said entitlement propagation delays can happen, so the onboarding UX should handle a ""pending"" state gracefully-avoid scary ""not entitled"" errors, tell the user the subscription is still syncing and may take a few minutes, and provide a clear retry/refresh experience (optionally showing when it was last checked) plus support instructions if it doesn't resolve.","Answer: A predictable server-side safety net that bounds resource residency time, ensures tool-call idempotency when retries/resume occur, and provides a clear fallback path.",Fail,0,"The score is 0.00 because the first three nodes in the retrieval contexts are irrelevant nodes, ranked higher than the relevant nodes, with reasons including 'The question is about acceptance criteria, but this document is about implementing a server-side streaming timebox and idempotent cancel fallbacks for streaming compatibility.', 'This document does not address the topic of interactive UI color states and a Kappa-style elevation scale for dense table and grid components.', and 'The question is about acceptance criteria, but this document is about adding multipart/form-data handling, strict content-type validation, and payload limit enforcement for API tool/file inputs.'",0.025974025974025976,Fail,"The score is 0.03 because the provided nodes in retrieval context do not match the expected output, with no relevant information found to support any of the acceptance criteria. Node 1 in retrieval context partially matches criteria 1 and 2, but the rest of the criteria do not have a matching node.",0.75,Pass,The score is 0.75 because the actual output discussed a different topic (server-side streaming timebox) that is not relevant to the input's acceptance criteria for the project introducing an algorithm to generate interactive UI color states and a Kappa-style elevation scale for dense table and grid components.,,,
-RAG_TC_005,"What failover sequence and recovery targets did MedThink specify for handling an EU region outage, including any limits on how long traffic can shift to the US?",dsid_8e838ab6a98f4cbcb672d41f210ff89c,"MedThink's preferred failover hierarchy is EU primary → EU warm standby → US emergency failover. They set a target RPO of 15 minutes for active datasets and an RTO target of 30 minutes for critical APIs, and allow shifting to the US only during declared, pre-approved emergency windows capped at 4 hours.","Answer: This PR implements a server-side streaming timebox (configurable per-route) that gracefully converts oversized/inflight streams into a final 'timeboxed' terminal event, augments client-cancel handling to be idempotent across reconnect/resume windows, and plumps a compact resume token that includes tool-call idempotency metadata.",Pass,1.0,"The score is 1.00 because the first node in the retrieval context is relevant and ranked higher than the second node, which discusses unrelated topics such as API tool/file inputs, keeping the relevant node at the top.",0.025974025974025976,Fail,"The score is 0.03 because the provided nodes in retrieval context do not match the expected output, with no relevant information found to support any of the acceptance criteria. Node 1 in retrieval context partially matches criteria 1 and 2, but the rest of the criteria do not have a matching node.",0.75,Pass,"The score is 0.75 because the actual output mentioned resource residency time, which is unrelated to handling delays in the customer onboarding flow.",,,
-RAG_TC_006,"In the draft spec about extending a routing policy engine for automated regional failover, what is the proposed priority order for evaluating different failure signals when deciding whether to shift traffic or fail over?",dsid_184be937d34a412ab5e61366d54d8ed6,"The draft proposes this canonical v1 signal priority order: (1) authoritative Reachability DOWN → FAILOVER (unless no healthy fallback), (2) fast/severe 5xx error burn → FAILOVER or PARTIAL_SHIFT depending on blast radius and capacity, (3) tail latency burn → PARTIAL_SHIFT first, escalating to FAILOVER if corroborated and sustained, (4) capacity exhaustion/hard gate → HOLD plus load shed (avoid shifting into constrained regions), and (5) control plane degradation → HOLD to avoid rapid flips/oscillation.","Answer: This PR implements a server-side streaming timebox (configurable per-route) that gracefully converts oversized/inflight streams into a final 'timeboxed' terminal event, augments client-cancel handling to be idempotent across reconnect/resume windows, and plumbs a compact resume token that includes tool-call idempotency metadata.",Pass,1.0,"The score is 1.00 because the first node, a document describing a server-side streaming timebox, is ranked higher than the irrelevant nodes, the second document which doesn't mention EU region outages or shifting traffic to the US, and the third document which describes a feature unrelated to failover sequence and recovery targets.",0.025974025974025976,Fail,"The score is 0.03 because the provided nodes in retrieval context do not match the expected output, with no relevant information found to support any of the acceptance criteria. Node 1 in retrieval context partially matches criteria 1 and 2, but the rest of the criteria do not have a matching node.",0.4,Fail,"The score is 0.40 because the actual output failed to address the specific question about failover sequence and recovery targets for an EU region outage, instead mentioning irrelevant information about failover sequence or recovery targets three times.",,,
-RAG_TC_007,"In a rolling investigation of a model regression on policy-related prompts after a recent deploy, what was the average triage rubric score change between the older baseline build and the newer optimized build in the first comparison run?",dsid_72ec4a9962ba43e88acd61abbba1052d,"In the first comparison run, the baseline build averaged 2.7 while the newer optimized build averaged 1.9, a decrease of 0.8 rubric points.",Answer: 3.0.,Pass,1.0,"The score is 1.00 because the first two nodes in the retrieval contexts are relevant, and the third node, ranked third, is correctly ranked lower due to being irrelevant, with the second document being not at all relevant to the topic of proposed priority order for evaluating different failure signals.",0.9565217391304348,Pass,"The score is 0.96 because the node(s) in retrieval context matches the description in the expected output, specifically the first sentence, which is supported by the repeated mention of the same information in the supportive reasons. However, the lack of any information in the expected output that doesn't match the retrieval context, as indicated by the unsupportive reasons, also contributes to the high score.",0.4,Fail,"The score is 0.40 because the actual output contains irrelevant statements about timebox configurability, client-cancel handling, and compact resume tokens, which are not directly related to the priority order for evaluating failure signals.",,,
-RAG_TC_008,"In the internal shiproom runner notes, what is the target time-to-recover threshold for a verified rollback in staging?",dsid_5fc2dba9f6ac4af2b49b4f546a4298d0,The rollback plan is considered verified in staging if the time-to-recover is under 10 minutes.,Answer: Timeboxed=true.,Pass,1.0,"The score is 1.00 because the first node in the retrieval context is highly relevant, and the second node is correctly ranked lower due to the reason: The second document does not provide any information about the average triage rubric score change between the older baseline build and the newer optimized build in the first comparison run.",0.5,Fail,"The score is 0.50 because the expected output mentions a decrease in rubric points, which is not supported by the 1st node in retrieval context that only mentions server-side streaming and multipart/form-data parsing. Additionally, the 2nd node in retrieval context is not mentioned at all in the expected output.",0.3333333333333333,Fail,"The score is 0.33 because the actual output provided information about the average triage rubric score change, but also included redundant information about the same topic, which negatively impacted the relevancy score.",,,
-RAG_TC_009,"In the EdgePath evaluation email thread, what alternative Year 1 pricing package did Redwood propose instead of matching the competitor's 50 percent first-year discount and migration credit?",dsid_85deb10a652742baaf28af6149600001,"Redwood said it wouldn't match the competitor's 50% blanket Year-1 discount and $60k migration credit, and instead proposed a 12-month committed prepay package with ~40% off list on prepay buckets plus a $50,000 one-time onboarding/migration credit tied to milestones, with an optional seat/license fee to cap variable spend and a 99.9% latency SLO for hosted US instances.",Answer: Redwood_timeboxed.,Pass,1.0,"The score is 1.00 because the first node in the retrieval context is relevant and clearly addresses the question, while the second node is irrelevant and does not provide any information about the target time-to-recover threshold for a verified rollback in staging.",0.5,Fail,"The score is 0.50 because the expected output mentions a rollback plan and time-to-recover, but none of the nodes in retrieval context match this information, and the provided nodes only discuss server-side streaming and multipart/form-data parsing.",0.5,Fail,"The score is 0.50 because the actual output does not contain any information about the target time-to-recover threshold for a verified rollback in staging, making it partially relevant to the input question.",,,
-RAG_TC_010,How does the new alerting approach group model-serving requests by the stages they pass through to reduce noisy alerts and speed up root cause analysis?,dsid_c1a6a71323c04c1ba5445aadea340362,"It adds a lightweight token_stage_cohort service that computes a deterministic ""cohort key"" for each invocation from stage-level signals (e.g., token counts per stage, KV-cache hit patterns, decode batch size) and keeps short-lived aggregates per cohort. An alert route-matrix generator then uses those cohort rollups to build a route × stage alert matrix that attributes SLO violations to the most likely pipeline stages and biases escalation to the top-k responsible stages, reducing per-route alert noise and speeding RCA.",Answer: The new alerting approach group model-serving requests by the stages they pass through to reduce noisy alerts.,Fail,0,"The score is 0.00 because the first and second nodes in the retrieval contexts are irrelevant nodes, ranked higher than they should be, as they do not mention Redwood's alternative pricing package.",0.5,Fail,"The score is 0.50 because the expected output mentions a rollback plan and time-to-recover, but none of the nodes in retrieval context match this information, and the provided nodes only discuss server-side streaming and multipart/form-data parsing.",1.0,Pass,"The score is 1.00 because the actual output directly addresses the question asked in the input, providing a clear and relevant answer.",,,
+RAG_TC_001,What are the default size limits for file uploads and total request size for the new multipart upload support on the OpenAI-compatible API endpoints?,dsid_ae068ee4aa9640159427cd941bef0238,The default limits are 10 MiB per file (max_file_size) and 50 MiB total per request (max_total_request_size) for multipart uploads on the OpenAI-compatible endpoints.,"Answer: 10MiB, 50MiB, 20.",,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,"metric: contextual_precision
+------------------------
+metric: contextual_recall
+------------------------
+metric: answer_relevancy
+------------------------
+","contextual_precision: 
+------------------------
+contextual_recall: 
+------------------------
+answer_relevancy: 
+------------------------
+","contextual_precision: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+contextual_recall: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+answer_relevancy: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+"
+RAG_TC_002,What is the name of the new metric added so SRE can track when server-side streaming sessions get finalized due to hitting the time limit?,dsid_9550250a59e74f1bbd5612480b2e7100,The new metric is `stream.timebox_finalized` (with labels for route and model).,Answer: timeboxed,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,"metric: contextual_precision
+------------------------
+metric: contextual_recall
+------------------------
+metric: answer_relevancy
+------------------------
+","contextual_precision: 
+------------------------
+contextual_recall: 
+------------------------
+answer_relevancy: 
+------------------------
+","contextual_precision: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+contextual_recall: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+answer_relevancy: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+"
+RAG_TC_003,What are the acceptance criteria for the project introducing an algorithm to generate interactive UI color states and a Kappa-style elevation scale for dense table and grid components?,dsid_3fd6af404fae48e6b8ea5a57875ef78f,"The acceptance criteria are: (1) deliver a stable design JSON token spec including the base palette, interactive derivative tokens (e.g., color.interactive.primary.hover), and elevation.kappa.0-6 with explicit shadow parameters; (2) land an implementation-ready tokens PR in the frontend repo, with DataGrid and Table consuming the new tokens behind a feature flag; (3) pass accessibility contrast checks for all interactive states (3:1 where applicable and 4.5:1 for primary actionable text); (4) add per-component visual regression snapshots/tolerances with no regressions beyond approved deltas; (5) update the Figma design kit with tokenized components and guidance notes; and (6) execute a rollout plan from internal canary on analytics dashboards to staged rollout and full migration with a fallback.",Answer: Implementation should use runtime CSS variables for quick theming and a build-time compiled fallb,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,"metric: contextual_precision
+------------------------
+metric: contextual_recall
+------------------------
+metric: answer_relevancy
+------------------------
+","contextual_precision: 
+------------------------
+contextual_recall: 
+------------------------
+answer_relevancy: 
+------------------------
+","contextual_precision: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+contextual_recall: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+answer_relevancy: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+"
+RAG_TC_004,"In the meeting about onboarding a SaaS product to Google Cloud Marketplace, what did the GCP team recommend for handling delays where a new subscription entitlement is not immediately available during the customer onboarding flow?",dsid_6c4c1c875e704f09b4d791d64d7bc7e5,"The GCP team said entitlement propagation delays can happen, so the onboarding UX should handle a ""pending"" state gracefully-avoid scary ""not entitled"" errors, tell the user the subscription is still syncing and may take a few minutes, and provide a clear retry/refresh experience (optionally showing when it was last checked) plus support instructions if it doesn't resolve.","Answer: GCP emphasized keeping dimension names stable, ensuring aggregation and rounding are consistent, and making the onboarding flow resilient to entitlement propagation delays.",,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,"metric: contextual_precision
+------------------------
+metric: contextual_recall
+------------------------
+metric: answer_relevancy
+------------------------
+","contextual_precision: 
+------------------------
+contextual_recall: 
+------------------------
+answer_relevancy: 
+------------------------
+","contextual_precision: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+contextual_recall: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+answer_relevancy: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+"
+RAG_TC_005,"What failover sequence and recovery targets did MedThink specify for handling an EU region outage, including any limits on how long traffic can shift to the US?",dsid_8e838ab6a98f4cbcb672d41f210ff89c,"MedThink's preferred failover hierarchy is EU primary → EU warm standby → US emergency failover. They set a target RPO of 15 minutes for active datasets and an RTO target of 30 minutes for critical APIs, and allow shifting to the US only during declared, pre-approved emergency windows capped at 4 hours.","Answer: No-op, failover, partial shift, rollback, hold. Action: executable change (policy flip, weight adjustment, circuit breaker mode) emitted by controller.",,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,"metric: contextual_precision
+------------------------
+metric: contextual_recall
+------------------------
+metric: answer_relevancy
+------------------------
+","contextual_precision: 
+------------------------
+contextual_recall: 
+------------------------
+answer_relevancy: 
+------------------------
+","contextual_precision: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+contextual_recall: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+answer_relevancy: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+"
+RAG_TC_006,"In the draft spec about extending a routing policy engine for automated regional failover, what is the proposed priority order for evaluating different failure signals when deciding whether to shift traffic or fail over?",dsid_184be937d34a412ab5e61366d54d8ed6,"The draft proposes this canonical v1 signal priority order: (1) authoritative Reachability DOWN → FAILOVER (unless no healthy fallback), (2) fast/severe 5xx error burn → FAILOVER or PARTIAL_SHIFT depending on blast radius and capacity, (3) tail latency burn → PARTIAL_SHIFT first, escalating to FAILOVER if corroborated and sustained, (4) capacity exhaustion/hard gate → HOLD plus load shed (avoid shifting into constrained regions), and (5) control plane degradation → HOLD to avoid rapid flips/oscillation.",Answer: Reachability: ok|degraded|down + confidence + last_updated - errors_5xx_burn: burn_rate + window + confidence - tail_latency_burn: burn_rate + p95/p99 deltas + confidence - capacity_headroom: percent + “hard gate” boolean - control_plane_health: ok| Final,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,"metric: contextual_precision
+------------------------
+metric: contextual_recall
+------------------------
+metric: answer_relevancy
+------------------------
+","contextual_precision: 
+------------------------
+contextual_recall: 
+------------------------
+answer_relevancy: 
+------------------------
+","contextual_precision: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+contextual_recall: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+answer_relevancy: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+"
+RAG_TC_007,"In a rolling investigation of a model regression on policy-related prompts after a recent deploy, what was the average triage rubric score change between the older baseline build and the newer optimized build in the first comparison run?",dsid_72ec4a9962ba43e88acd61abbba1052d,"In the first comparison run, the baseline build averaged 2.7 while the newer optimized build averaged 1.9, a decrease of 0.8 rubric points.",Answer: The average triage rubric score change was 1.9.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,"metric: contextual_precision
+------------------------
+metric: contextual_recall
+------------------------
+metric: answer_relevancy
+------------------------
+","contextual_precision: 
+------------------------
+contextual_recall: 
+------------------------
+answer_relevancy: 
+------------------------
+","contextual_precision: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+contextual_recall: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+answer_relevancy: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+"
+RAG_TC_008,"In the internal shiproom runner notes, what is the target time-to-recover threshold for a verified rollback in staging?",dsid_5fc2dba9f6ac4af2b49b4f546a4298d0,The rollback plan is considered verified in staging if the time-to-recover is under 10 minutes.,Answer: 10m.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,"metric: contextual_precision
+------------------------
+metric: contextual_recall
+------------------------
+metric: answer_relevancy
+------------------------
+","contextual_precision: 
+------------------------
+contextual_recall: 
+------------------------
+answer_relevancy: 
+------------------------
+","contextual_precision: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+contextual_recall: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+answer_relevancy: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+"
+RAG_TC_009,"In the EdgePath evaluation email thread, what alternative Year 1 pricing package did Redwood propose instead of matching the competitor's 50 percent first-year discount and migration credit?",dsid_85deb10a652742baaf28af6149600001,"Redwood said it wouldn't match the competitor's 50% blanket Year-1 discount and $60k migration credit, and instead proposed a 12-month committed prepay package with ~40% off list on prepay buckets plus a $50,000 one-time onboarding/migration credit tied to milestones, with an optional seat/license fee to cap variable spend and a 99.9% latency SLO for hosted US instances.",Answer: Prepay bucket + seat licenses with an onboarding credit.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,"metric: contextual_precision
+------------------------
+metric: contextual_recall
+------------------------
+metric: answer_relevancy
+------------------------
+","contextual_precision: 
+------------------------
+contextual_recall: 
+------------------------
+answer_relevancy: 
+------------------------
+","contextual_precision: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+contextual_recall: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+answer_relevancy: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+"
+RAG_TC_010,How does the new alerting approach group model-serving requests by the stages they pass through to reduce noisy alerts and speed up root cause analysis?,dsid_c1a6a71323c04c1ba5445aadea340362,"It adds a lightweight token_stage_cohort service that computes a deterministic ""cohort key"" for each invocation from stage-level signals (e.g., token counts per stage, KV-cache hit patterns, decode batch size) and keeps short-lived aggregates per cohort. An alert route-matrix generator then uses those cohort rollups to build a route × stage alert matrix that attributes SLO violations to the most likely pipeline stages and biases escalation to the top-k responsible stages, reducing per-route alert noise and speeding RCA.",Answer: Introduces an alert route-matrix generator that consumes cohort rollups and emits alert bindings which bias escalation to the top-k stages for that route.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,,,DeepEval traced evaluation did not expose metric score/reason.,"metric: contextual_precision
+------------------------
+metric: contextual_recall
+------------------------
+metric: answer_relevancy
+------------------------
+","contextual_precision: 
+------------------------
+contextual_recall: 
+------------------------
+answer_relevancy: 
+------------------------
+","contextual_precision: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+contextual_recall: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+answer_relevancy: Groq evaluator error: Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}
+------------------------
+"
