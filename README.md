@@ -1,127 +1,230 @@
 # RAG Pipeline Evaluation Project
 
-This project is a QA testing project for a RAG chatbot.
+This project is a QA testing project for a Retrieval-Augmented Generation (RAG) pipeline.
 
-The goal is to check whether the chatbot:
+The goal is to check whether the RAG pipeline:
 
-- retrieves the correct source document
-- answers based on the retrieved document
+- retrieves relevant source documents
+- ranks useful context higher
+- generates an answer from retrieved context
 - avoids unsupported or hallucinated information
-- gives a pass/fail result for each test question
+- evaluates the RAG output using DeepEval RAG metrics
 
 ## Project Objective
 
-This project focuses on QA evaluation of a RAG system. The goal is to prepare a QA workflow that can verify whether a RAG chatbot retrieves the correct document and generates an answer that matches the expected answer.
+This project focuses on QA evaluation of a RAG system using a professional metric-based testing approach.
 
-The project prepares a lightweight QA dataset, generates expected embedding fingerprint codes, creates a document store, runs a demo RAG pipeline to generate actual outputs, and evaluates the results using retrieval match, semantic similarity, fact-level meaning check, and overall QA status.
+The workflow prepares a lightweight QA dataset from EnterpriseRAG-Bench, creates a document store, builds a LangChain-style vector store retrieval flow, generates demo RAG answers, and evaluates the RAG pipeline using DeepEval metrics with Groq as the evaluation judge.
 
 ## Dataset Used
 
-This project uses the public EnterpriseRAG-Bench dataset from Hugging Face: `onyx-dot-app/EnterpriseRAG-Bench`.
+This project uses the public EnterpriseRAG-Bench dataset from Hugging Face:
+
+`onyx-dot-app/EnterpriseRAG-Bench`
 
 The dataset contains two main parts:
 
 - `documents` - source documents from company-like systems such as Confluence, GitHub, Gmail, Slack, Jira, and other enterprise tools.
 - `questions` - test questions with expected document IDs, gold answers, and answer facts.
 
-For the first version of this QA workflow, 10 `basic` questions were selected. Each selected question has one clear expected source document, which makes the evaluation easier to verify.
+For this version of the QA workflow, 10 questions were selected using two filters:
+
+```text
+question_type == "basic"
+expected_doc_count == 1
+```
+
+So the selected test cases are basic questions with one clear expected source document.
 
 ## Files
 
 - `README.md` - explains the project objective, dataset, QA workflow, and current status.
-- `RAG_Pipeline_Evaluation_ETL_and_Embedding_Check.ipynb` - Google Colab notebook used for ETL, expected embedding code generation, document store creation, demo RAG pipeline, hybrid retrieval, chunk-based answer extraction, semantic similarity comparison, fact-level checking, and overall QA status.
-- `lightweight_rag_qa_dataset_with_expected_codes.csv` - lightweight QA dataset created from EnterpriseRAG-Bench with expected answers and expected embedding codes.
-- `rag_qa_final_demo_result_with_all_checks.csv` - final demo result file showing retrieval match status, similarity score, fact-level check, overall QA status, and remarks.
-- `document_store/` - created during notebook execution to store exported source documents used by the demo RAG pipeline.
+- `rag_pipeline_evaluation.ipynb` - clean Google Colab notebook for dataset preparation, document store creation, LangChain vector store retrieval, answer generation, DeepEval tracing, and RAG metric evaluation.
+- `lightweight_rag_qa_dataset_with_expected_codes.csv` - lightweight QA dataset created from EnterpriseRAG-Bench.
+- `rag_contextual_precision_recall_tracing_result.csv` - final CSV output containing selected test cases and generated actual outputs.
+- `rag_document_to_vector_store_flow.jpg` - diagram showing the document-to-vector-store flow.
+- `document_store/` - folder created during notebook execution to store exported source documents used by the demo RAG pipeline.
 
-## Testing Flow
+## RAG Evaluation Flow
 
 1. Load EnterpriseRAG-Bench from Hugging Face.
-2. Select basic questions from the `questions` dataset.
-3. Use `expected_doc_ids` to find the matching source documents from the `documents` dataset.
-4. Create a lightweight QA dataset with question, expected document ID, gold answer, and answer facts.
-5. Generate expected embedding fingerprint codes from the gold answers.
-6. Export source documents into a `document_store` folder during notebook execution.
-7. Run the demo RAG pipeline using hybrid retrieval.
-8. Generate `actual_retrieved_doc_ids` and `actual_output`.
-9. Generate actual embedding fingerprint codes from the demo RAG outputs.
-10. Check whether the actual retrieved document matches the expected document ID.
-11. Compare expected answer and actual output using semantic similarity score.
-12. Check whether expected answer facts are present in the actual output using fact-level meaning check.
-13. Combine retrieval, similarity, and fact-check results into an overall QA status.
-14. Mark each test case as `Pass`, `Fail`, or `Not Run` with detailed remarks.
+2. Select 10 QA test cases using:
 
-## Steps of Procedure
+```text
+question_type == "basic"
+expected_doc_count == 1
+```
 
-1. Prepare a lightweight QA dataset from EnterpriseRAG-Bench.
-2. Generate expected embedding fingerprint codes from the gold answers.
-3. Create a `document_store` folder from the expected source documents.
-4. Run demo RAG retrieval using hybrid search.
-5. Generate actual retrieved document IDs and actual outputs using chunk-based answer extraction.
-6. Check retrieval match, semantic similarity, and fact-level meaning match.
-7. Generate overall QA status as Pass, Fail, or Not Run with detailed remarks.
+3. Use `expected_doc_ids` to find matching source documents.
+4. Create a lightweight QA dataframe.
+5. Export matched source documents into `document_store`.
+6. Load `.txt` files from `document_store`.
+7. Convert loaded documents into LangChain `Document` objects.
+8. Store LangChain documents inside `InMemoryVectorStore`.
+9. Retrieve top-k documents using vector similarity search.
+10. Generate demo `actual_output` using `google/flan-t5-large` in Colab.
+11. Store RAG run data using DeepEval tracing.
+12. Evaluate the RAG pipeline using DeepEval metrics with Groq.
 
-## Question Selection Plan
+## Document-to-Vector-Store Flow
 
-For the first version, only a small set of questions will be selected to keep the QA workflow simple and easy to verify.
+The notebook follows this document processing flow:
 
-- Start with 10 questions.
-- Prefer `basic` question type first.
-- Select questions that have one clear expected document.
-- Avoid complex multi-document questions in the first version.
-- Avoid `info not found` questions in the first version.
+```text
+.txt files
+→ document_store list
+→ LangChain Document objects
+→ InMemoryVectorStore
+→ similarity_search_with_score()
+→ top-k retrieved documents
+```
 
-## How Source Documents Are Selected
+Simple meaning:
 
-Each question in EnterpriseRAG-Bench has `expected_doc_ids`. These IDs tell which document should contain the correct answer.
+```text
+Raw text documents are converted into searchable vector-store format.
+The vector store retrieves the most relevant top-k documents for each question.
+```
 
-For each selected question:
+## Model Usage
 
-1. Read the `expected_doc_ids`.
-2. Find the matching document from the `documents` dataset using `doc_id`.
-3. Use only those matched documents as the source documents for the lightweight QA dataset.
+This notebook uses two different models for two different purposes.
 
-## QA Flow
+1. Local Hugging Face model for answer generation
 
-The question dataset provides the expected document ID and expected answer.
+```text
+Question + Top-k retrieved documents
+→ google/flan-t5-large running in Colab
+→ Generated answer / actual_output
+```
 
-The matching source document is exported into `document_store` during notebook execution.
+2. Groq model with DeepEval for evaluation
 
-The demo RAG pipeline reads documents from `document_store`.
+```text
+Question + Gold answer + Retrieved context + Actual output
+→ DeepEval metric using Groq
+→ Metric score and reason printed in notebook console output
+```
 
-Hybrid retrieval selects the most relevant document using keyword matching and embedding similarity.
+Simple meaning:
 
-The actual retrieved document ID is compared with the expected document ID.
+```text
+google/flan-t5-large = generates demo RAG answer
+Groq + DeepEval = evaluates RAG quality
+```
 
-The actual answer is generated from the retrieved document using chunk-based answer extraction.
+## DeepEval Metrics Implemented
 
-The actual answer is compared with the gold answer using semantic similarity.
+This project currently implements all 5 main DeepEval RAG metrics:
 
-The expected answer facts are checked against the actual output using fact-level meaning check.
+- Contextual Precision
+- Contextual Recall
+- Contextual Relevancy
+- Answer Relevancy
+- Faithfulness
 
-The retrieval result, similarity result, and fact-check result are combined into an overall QA status with detailed remarks.
+### Contextual Precision
 
-## Current Status and Next Phase
+Checks whether the most useful retrieved documents are ranked higher than less useful documents.
 
-Current status:
+Simple:
 
-- Lightweight QA dataset is prepared.
-- Expected embedding fingerprint codes are generated.
-- `document_store` creation is added during notebook execution.
-- Demo RAG pipeline is added using hybrid retrieval and chunk-based answer extraction.
-- Retrieval match, semantic similarity, fact-level meaning check, and overall QA status logic are verified.
-- Detailed failure remarks are added for failed cases.
+```text
+Are the best documents placed at the top?
+```
 
-Latest result summary:
+### Contextual Recall
 
-- Retrieval match: 9 Pass, 1 Fail.
-- Semantic similarity: 1 Pass, 9 Fail.
-- Fact-level check: 7 Pass, 3 Fail.
-- Overall QA status: 1 Pass, 9 Fail.
+Checks whether the retrieved documents contain the needed information from the expected answer.
 
-Next phase:
+Simple:
 
-- Improve demo RAG answer quality so `actual_output` becomes more direct and less noisy.
-- Reduce extra/unwanted text in generated answers.
-- Re-run retrieval, similarity, fact-check, and overall QA logic after improvements.
-- Prepare the final QA report with retrieval status, similarity score, fact match score, overall status, missing facts, and remarks.
+```text
+Did retrieval bring enough required information?
+```
+
+### Contextual Relevancy
+
+Checks whether the retrieved documents are relevant to the question.
+
+Simple:
+
+```text
+Are the retrieved documents related to the question?
+```
+
+### Answer Relevancy
+
+Checks whether the generated answer actually answers the question.
+
+Simple:
+
+```text
+Is the answer relevant to the question?
+```
+
+### Faithfulness
+
+Checks whether the generated answer is supported by the retrieved documents.
+
+Simple:
+
+```text
+Are the facts in the answer grounded in the retrieved context?
+```
+
+## DeepEval Tracing
+
+The notebook uses DeepEval tracing with:
+
+```python
+@observe
+update_current_trace()
+evaluation_dataset.evals_iterator()
+```
+
+Tracing records the RAG run data:
+
+```text
+question
+actual_output
+expected_output
+retrieval_context
+```
+
+DeepEval metrics use this traced data to evaluate the RAG pipeline.
+
+DeepEval prints metric score and reason in the notebook console output.
+
+## Current Status
+
+Completed:
+
+- Lightweight QA dataset prepared using `basic` questions with one expected source document.
+- Document store created.
+- LangChain vector store retrieval implemented.
+- Top-k retrieval implemented using `similarity_search_with_score()`.
+- Demo answer generation implemented using `google/flan-t5-large`.
+- Groq custom wrapper added for DeepEval evaluation.
+- DeepEval tracing implemented.
+- All 5 DeepEval RAG metrics implemented.
+- Final CSV output generated with 10 test cases and `actual_output`.
+
+Known limitation:
+
+- Groq free-tier rate limits can cause `429 rate_limit_exceeded` during metric evaluation.
+- This is an API/free-tier limitation, not a RAG notebook logic issue.
+
+## Current Output
+
+The final CSV contains:
+
+```text
+test_id
+question
+expected_doc_ids
+gold_answer
+actual_output
+```
+
+Metric scores and reasons are viewed from the DeepEval console output in the notebook, because the current implementation follows the traced evaluation flow.
