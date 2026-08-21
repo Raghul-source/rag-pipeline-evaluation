@@ -40,8 +40,8 @@ So the selected test cases are basic questions with one clear expected source do
 
 - `README.md` - explains the project objective, dataset, QA workflow, and current status.
 - `rag_pipeline_evaluation.ipynb` - clean Google Colab notebook for dataset preparation, document store creation, LangChain vector store retrieval, answer generation, DeepEval tracing, and RAG metric evaluation.
-- `lightweight_rag_qa_dataset_with_expected_codes.csv` - lightweight QA dataset created from EnterpriseRAG-Bench.
-- `rag_contextual_precision_recall_tracing_result.csv` - final CSV output containing selected test cases and generated actual outputs.
+- `lightweight_rag_qa_dataset.csv` - lightweight QA dataset created from EnterpriseRAG-Bench.
+- `rag_deepeval_tracing_result.csv` - final CSV output containing selected test cases and generated actual outputs.
 - `rag_document_to_vector_store_flow.jpg` - diagram showing the document-to-vector-store flow.
 - `document_store/` - folder created during notebook execution to store exported source documents used by the demo RAG pipeline.
 
